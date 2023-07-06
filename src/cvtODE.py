@@ -1,12 +1,11 @@
 import numpy as np
 from tools import reshape_state, kappa
 from compute_centroid import compute_centroid
-from globals import *
 
 # Define the function cvtODE
-def cvtODE(t, z):
+def cvtODE(t, z, args):
 
-    # from globals import n, h, K, Fi, amin, Tau, g, psi, a, est_pos_err, tru_pos_err
+    (n, K,Tau, g, psi, h, sens_info_flag, amin, a, ai, li, Li, Fi, tspan, est_pos_err, tru_pos_err) = args
     
     # ------------------------------------------------- #
     # ---- The Adaptive Coverage Control Algorithm ---- #
@@ -17,7 +16,7 @@ def cvtODE(t, z):
     dLi = np.zeros_like(Li)
 
     # Voronoi regions & Centroid calcuation
-    Cv, Cv_true, L = compute_centroid(px, py, ai)  
+    Cv, Cv_true, L, sens_info_flag, a, Fi, K = compute_centroid(px, py, ai, n, sens_info_flag, a, Fi, K)  
 
     # Control law: ui = -K*(Cvi - pi)
     dx = K[0, 0] * (Cv[0, :].T - px)

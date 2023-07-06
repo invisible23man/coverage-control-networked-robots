@@ -24,14 +24,35 @@ By: Gowrisankar Chandraskeharan
 """
 
 # Initial Positions
-x0 = np.random.rand(n, 1)  # Initial x
-y0 = np.random.rand(n, 1)  # Initial y
+# x0 = np.random.rand(n, 1)  # Initial x
+# y0 = np.random.rand(n, 1)  # Initial y
 
+x_min, x_max = 0, 1  # Range for x coordinates
+y_min, y_max = 0, 1  # Range for y coordinates
+
+# Calculate the number of rows and columns
+rows = int(np.sqrt(n))
+cols = int(np.ceil(n / rows))
+
+# Adjust the number of rows and columns for odd 'n' values
+if n % 2 == 1:
+    rows += 1
+
+# Create grid of evenly spaced positions
+x_vals = np.linspace(x_min, x_max, cols)
+y_vals = np.linspace(y_min, y_max, rows)
+x_grid, y_grid = np.meshgrid(x_vals, y_vals)
+
+# Flatten the grid to get the initial positions
+x0 = x_grid.flatten()[:n, np.newaxis]
+y0 = y_grid.flatten()[:n, np.newaxis]
 # Initialize state
 z0 = np.concatenate([x0.flatten(), y0.flatten(), ai.flatten(), li.flatten(), Li.flatten()])  # Initial state
 
+global_args = (n, K,Tau, g, psi, h, sens_info_flag, amin, a, ai, li, Li, Fi, tspan, est_pos_err, tru_pos_err)
+
 # Define the ODE solver
-sol = solve_ivp(cvtODE, [tspan[0], tspan[-1]], z0, method='RK45', t_eval=tspan)
+sol = solve_ivp(cvtODE, [tspan[0], tspan[-1]], z0, method='RK45', t_eval=tspan, args = [global_args])
 
 # TODO: Save/Load Workspace
 

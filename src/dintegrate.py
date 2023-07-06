@@ -1,10 +1,10 @@
 import numpy as np
 from shapely.geometry import Point, Polygon
 from tools import kappa
-from globals import *
 
 
-def dintegrate(vx, vy, pi_t, ai_t, pos):
+def dintegrate(vx, vy, pi_t, ai_t, pos,
+                sens_info_flag, a, Fi, K):
     """
     Performs integration over the voronoi region.
 
@@ -71,4 +71,4 @@ def dintegrate(vx, vy, pi_t, ai_t, pos):
 
     Fi[:, :, pos] = (1 / mv) * (k1 @ K @ k1.T)
 
-    return Cvi, Cvi_true
+    return Cvi, Cvi_true, sens_info_flag, a, Fi, K

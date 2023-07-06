@@ -3,12 +3,11 @@ from scipy.spatial.distance import pdist
 from tools import compute_voronoi_with_boundaries
 import numpy as np
 from dintegrate import dintegrate
-from globals import *
 
-def compute_centroid(px, py, ai):
+def compute_centroid(px, py, ai, n, sens_info_flag, a, Fi, K):
 
     # Compute local Voronoi region Vi
-    bs_ext = np.array([[0, 1, 1, 0], [0, 0, 1, 1]]).T  # Environment boundary 
+    bs_ext = np.array([[-0.5, 1.5, 1.5, -0.5], [-0.5, -0.5, 1.5, 1.5]]).T  # Environment boundary 
     points = np.vstack((px, py)).T
     vor, finite_points, finite_regions  = \
         compute_voronoi_with_boundaries(points, bs_ext, plot=False)  
@@ -27,7 +26,9 @@ def compute_centroid(px, py, ai):
 
             if pos_x == pos_y:
                 # Reorder centroids based on robot order
-                Cv[:, pos_x], Cv_true[:, pos_x] = dintegrate(vx, vy, vor.points[i, :], ai[:, pos_x], pos_x)
+                Cv[:, pos_x], Cv_true[:, pos_x], sens_info_flag, a, Fi, K = \
+                    dintegrate(vx, vy, vor.points[i, :], ai[:, pos_x], pos_x,
+                                                                sens_info_flag, a, Fi, K)
             else:
                 print('Mismatch in position found')
                 Cv[:, pos_x] = vor.points[i, :].T
@@ -52,4 +53,4 @@ def compute_centroid(px, py, ai):
         L[r2, r1] = -edge_len
     L = L + np.diag(-1 * np.sum(L, 1))
 
-    return Cv, Cv_true, L
+    return Cv, Cv_true, L, sens_info_flag, a, Fi, K

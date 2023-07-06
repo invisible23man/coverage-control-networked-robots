@@ -71,8 +71,8 @@ def compute_voronoi_with_boundaries(points, boundary_points, plot=False):
             plt.fill(*zip(*region), alpha=0.4)
 
         plt.plot(points[:, 0], points[:, 1], 'ko')
-        plt.xlim(-1, 2)
-        plt.ylim(-1, 2)
+        plt.xlim(-2, 3)
+        plt.ylim(-2, 3)
 
         # Plot the points
         plt.scatter(points[:, 0], points[:, 1], color='black', label='Points')

@@ -1,3 +1,26 @@
+# # Global Variables
+
+# global n 
+# global K 
+# global Tau 
+# global g 
+# global psi 
+# global h 
+# global sens_info_flag 
+
+# # Model parameters
+# global amin 
+# global a 
+# global ai 
+# global li 
+# global Li 
+# global Fi 
+
+# # Simulation
+# global tspan 
+# global est_pos_err 
+# global tru_pos_err 
+
 import numpy as np
 
 # Global Variables
